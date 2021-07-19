@@ -10,8 +10,21 @@ const server = http.createServer((req, res) => {
   // on specifie le type de contenu que l'on renvoie dans le header de la réponse
   res.setHeader("Content-Type", "text/html");
 
+  let path = "./views/";
+
+  switch (req.url) {
+    case "/":
+      path += "index.html";
+      break;
+    case "/about":
+      path += "about.html";
+      break;
+    default:
+      path += "404.html";
+  }
+
   // renvoie d'un fichier html au client
-  const htmlResponse = fs.readFile("./views/index.html", (err, data) => {
+  const htmlResponse = fs.readFile(path, (err, data) => {
     if (err) {
       console.log(err);
       // on precise end ici car si une erreur est rencontré la requete ne sera
