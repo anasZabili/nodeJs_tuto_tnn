@@ -1,12 +1,10 @@
 const http = require("http");
 const fs = require("fs");
-const { resolveSoa } = require("dns");
+const _ = require("lodash");
 
 // createServer prend en parametre une callback function qui est declanché
 // a chaque fois qu'une requetes est reçu par notre serveur
 const server = http.createServer((req, res) => {
-  console.log(req.url, req.method);
-
   // on specifie le type de contenu que l'on renvoie dans le header de la réponse
   res.setHeader("Content-Type", "text/html");
 
@@ -21,9 +19,17 @@ const server = http.createServer((req, res) => {
       res.statusCode = 200;
       path += "about.html";
       break;
+    case "/about-me":
+      // ce code correspond a un status de redirection permanante d'une ressource
+      res.statusCode = 301;
+      // redirection de la page about-me vers la page about
+      res.setHeader("Location", "/about");
+      res.end();
+      break;
     default:
       res.statusCode = 404;
       path += "404.html";
+      break;
   }
 
   // renvoie d'un fichier html au client
