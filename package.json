@@ -1,0 +1,25 @@
+{
+  "name": "tuto_node_tnn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anasZabili/nodeJs_tuto_tnn.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anasZabili/nodeJs_tuto_tnn/issues"
+  },
+  "homepage": "https://github.com/anasZabili/nodeJs_tuto_tnn#readme"
+}
