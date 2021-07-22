@@ -48,7 +48,7 @@ app.get("/blogs/create", (req, res) => {
 
 // redirect
 app.get("/about-us", (req, res) => {
-  res.redirect("/about", { title: "404" });
+  res.redirect("/about");
 });
 
 // 404
@@ -59,5 +59,5 @@ app.use((req, res) => {
   // status piur set la status la requete a 404
   // res.status(404).sendFile("./views/404.html", { root: __dirname });
 
-  res.status(404).render("404");
+  res.status(404).render("404", { title: "404" });
 });
