@@ -65,6 +65,15 @@ app.get("/add-blog", (req, res) => {
     .catch((err) => console.log(err));
 });
 
+app.get("/all-blogs", (req, res) => {
+  // find get all the document
+  Blog.find()
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => console.log(err));
+});
+
 // app.get listen for get request take the url in parametere and the callback function
 app.get("/", (req, res) => {
   // res.send automatically determine the type of content that we gonna send so
