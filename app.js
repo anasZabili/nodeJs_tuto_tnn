@@ -51,35 +51,40 @@ app.use(express.static("public"));
 
 app.use(morgan("dev"));
 
-app.get("/add-blog", (req, res) => {
-  const blog = new Blog({
-    title: "Test",
-    snippet: "test",
-    body: "a test blog",
-  });
-  blog
-    .save()
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => console.log(err));
-});
+// app.get("/add-blog", (req, res) => {
+//   const blog = new Blog({
+//     title: "Test",
+//     snippet: "test",
+//     body: "a test blog",
+//   });
+//   blog
+//     .save()
+//     .then((result) => {
+//       res.send(result);
+//     })
+//     .catch((err) => console.log(err));
+// });
 
-app.get("/all-blogs", (req, res) => {
-  // find get all the document
-  Blog.find()
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => console.log(err));
-});
+// app.get("/all-blogs", (req, res) => {
+//   // find get all the document
+//   Blog.find()
+//     .then((result) => {
+//       res.send(result);
+//     })
+//     .catch((err) => console.log(err));
+// });
+
+// app.get("/single-blog", (req, res) => {
+//   Blog.findById("60fc8ec72333dd8911a5df21")
+//     .then((result) => res.send(result))
+//     .catch((err) => console.log(err));
+// });
 
 // app.get listen for get request take the url in parametere and the callback function
 app.get("/", (req, res) => {
   // res.send automatically determine the type of content that we gonna send so
   // we don't need to specify the Content-Type in the header
   // res.send also automatically handle de response code
-  // res.send("<p>Home</p>");
 
   // sendFile allow us the send html file to the client
   // with an absolute path
@@ -89,18 +94,31 @@ app.get("/", (req, res) => {
   // un chemin absolue
   // res.sendFile("./views/index.html", { root: __dirname });
 
-  const blogs = [
-    { title: "Yoshi finds eggs", snippet: "lorem ipsum" },
-    { title: "Yoshi finds french fries", snippet: "lorem ipsum" },
-    { title: "didier finds love", snippet: "lorem ipsum" },
-  ];
-  // with the view egine ejs with us render and not send
-  res.render("index", { title: "Home", blogs });
+  // const blogs = [
+  //   { title: "Yoshi finds eggs", snippet: "lorem ipsum" },
+  //   { title: "Yoshi finds french fries", snippet: "lorem ipsum" },
+  //   { title: "didier finds love", snippet: "lorem ipsum" },
+  // ];
+  // // with the view egine ejs with us render and not send
+  // res.render("index", { title: "Home", blogs });
+
+  res.redirect("/blogs");
 });
 
 app.get("/about", (req, res) => {
   // with the view egine ejs with us render and not send
   res.render("about", { title: "About" });
+});
+
+app.get("/blogs", (req, res) => {
+  Blog.find()
+    .sort({ createdAt: -1 })
+    .then((result) => {
+      res.render("index", { title: "All Blogs", blogs: result });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 app.get("/blogs/create", (req, res) => {
