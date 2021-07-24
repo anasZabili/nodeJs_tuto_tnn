@@ -1,5 +1,6 @@
 const express = require("express");
 const fs = require("fs");
+var morgan = require("morgan");
 
 // express app
 const app = express();
@@ -12,6 +13,31 @@ app.set("view engine", "ejs");
 
 // listen for request (return an instance of the server)
 app.listen(3000);
+
+// middleware
+
+// app.use((req, res, next) => {
+//   console.log("new request made");
+//   console.log("host: ", req.hostname);
+//   console.log("path: ", req.path);
+//   console.log("method: ", req.method);
+//   // next permet de continuer a explorer la pile de middleware fonction
+//   // a appéler dans tout les middleware qui ne termine pas le cycle (via un send, ou un render)
+//   next();
+// });
+
+// app.use((req, res, next) => {
+//   console.log("in the next middleware");
+//   next();
+// });
+
+// middleware and static file
+
+app.use(express.static("public"));
+
+// third party middleware
+
+app.use(morgan("dev"));
 
 // app.get listen for get request take the url in parametere and the callback function
 app.get("/", (req, res) => {
