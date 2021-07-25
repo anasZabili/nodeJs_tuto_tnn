@@ -47,6 +47,9 @@ app.set("view engine", "ejs");
 
 app.use(express.static("public"));
 
+// parse all the data to js object in the request object
+app.use(express.urlencoded({ extended: true }));
+
 // third party middleware
 
 app.use(morgan("dev"));
@@ -119,6 +122,19 @@ app.get("/blogs", (req, res) => {
     .catch((err) => {
       console.log(err);
     });
+});
+
+app.post("/blogs", (req, res) => {
+  // req.body is parse by the urlencoded middleware
+  console.log("the recive request is :", req.body);
+  const blog = new Blog(req.body);
+  blog
+    .save()
+    .then((result) => {
+      // we redirect the user when the blog is added to the database
+      res.redirect("/blogs");
+    })
+    .catch((err) => console.log(err));
 });
 
 app.get("/blogs/create", (req, res) => {
