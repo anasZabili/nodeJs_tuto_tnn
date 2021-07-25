@@ -150,6 +150,22 @@ app.get("/blogs/:id", (req, res) => {
     });
 });
 
+app.delete("/blogs/:id", (req, res) => {
+  const id = req.params.id;
+  Blog.findByIdAndDelete(id)
+    .then((result) => {
+      // sending a json response to the client with the redirection link
+      // because here the front generate an ajax request, in this case its not
+      // possible to directly handle de redirection in the back, so to do that
+      // we send to the front end, the redirection link in the response
+      // so the front end handle the response by redirecting the the specified link
+      res.json({
+        redirect: "/blogs",
+      });
+    })
+    .catch((err) => console.log(err));
+});
+
 app.get("/blogs/create", (req, res) => {
   res.render("create", { title: "Create a new blog" });
 });
