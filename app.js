@@ -2,8 +2,8 @@ const express = require("express");
 const fs = require("fs");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
-const Blog = require("./models/blog");
 const { render } = require("ejs");
+const blogRoutes = require("./routes/blogRoutes");
 
 // express app
 const app = express();
@@ -114,66 +114,15 @@ app.get("/about", (req, res) => {
   res.render("about", { title: "About" });
 });
 
-app.get("/blogs", (req, res) => {
-  Blog.find()
-    .sort({ createdAt: -1 })
-    .then((result) => {
-      res.render("index", { title: "All Blogs", blogs: result });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-app.post("/blogs", (req, res) => {
-  // req.body is parse by the urlencoded middleware
-  console.log("the recive request is :", req.body);
-  const blog = new Blog(req.body);
-  blog
-    .save()
-    .then((result) => {
-      // we redirect the user when the blog is added to the database
-      res.redirect("/blogs");
-    })
-    .catch((err) => console.log(err));
-});
-
-app.get("/blogs/:id", (req, res) => {
-  const id = req.params.id;
-  console.log("hello world");
-  Blog.findById(id)
-    .then((result) => {
-      res.render("details", { title: "Blog Details", blog: result });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-app.delete("/blogs/:id", (req, res) => {
-  const id = req.params.id;
-  Blog.findByIdAndDelete(id)
-    .then((result) => {
-      // sending a json response to the client with the redirection link
-      // because here the front generate an ajax request, in this case its not
-      // possible to directly handle de redirection in the back, so to do that
-      // we send to the front end, the redirection link in the response
-      // so the front end handle the response by redirecting the the specified link
-      res.json({
-        redirect: "/blogs",
-      });
-    })
-    .catch((err) => console.log(err));
-});
-
-app.get("/blogs/create", (req, res) => {
-  res.render("create", { title: "Create a new blog" });
-});
-
 // redirect
 app.get("/about-us", (req, res) => {
   res.redirect("/about");
 });
+
+// blog routes
+// invoke all the the routes of blogRoutes and set the root, of the blogRoutes
+// to /blogs
+app.use("/blogs", blogRoutes);
 
 // 404
 // app.use est declanché pour n'importe quel requete, ici si la requete na pas ete
